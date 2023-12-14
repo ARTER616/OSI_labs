@@ -9,27 +9,6 @@
 #include <sstream>
 #include <map>
 
-// bool getStatInfoClient() {
-//   FILE *file = popen("sudo netstat -tulpan | grep \"udp\" | grep \"127.0.0.1:8070\" | wc -l", "r");
-//   if (file == nullptr) {
-//       std::cout << "Error executing command shell\n";
-//       exit(2);
-//   }
-//   char tmp;
-//   size_t retVal;
-//   std::string perm;
-//   //while ((retVal = fread(&tmp, 1, sizeof(tmp), file)) != 0) {
-//   //    perm += tmp;
-//   //}
-//   fread(&tmp, 1, sizeof(tmp), file);
-//   perm = tmp;
-//   pclose(file);
-//   if (perm == "1") { // "1\n"
-//     return true;
-//   }
-//   return false;
-// }
-
 std::string collectData(const char *textFiles) {
   std::istringstream ss(textFiles);
   std::string temp;
@@ -42,7 +21,7 @@ std::string collectData(const char *textFiles) {
     if (*p == 0){
       break;
     }
-    size_t pos = temp.find("@"); // Находим позицию "@" в строке
+    size_t pos = temp.find("@");
     std::string second = temp.substr(pos);
     std::string first = temp.substr(0, pos);
     if (map_.find(first) != map_.end()) {
@@ -69,7 +48,7 @@ int main() {
     }
     server_addr.sin_family = AF_INET;
     inet_pton(AF_INET, "127.0.0.1", &(server_addr.sin_addr));
-    server_addr.sin_port = htons(8090); // Порт сервера
+    server_addr.sin_port = htons(8090);
     int size = sizeof(server_addr);
     if (bind(
             server_socket,
@@ -85,24 +64,6 @@ int main() {
     client_addr.sin_family = AF_INET;
     inet_pton(AF_INET, "127.0.0.1", &(client_addr.sin_addr));
     client_addr.sin_port = htons(8070);
-    // bool flagCLIENT = false;
-    // while (true) {
-    //   if (getStatInfoClient()) {
-    //     break;
-    //   } else {
-    //     if (!flagCLIENT) {
-    //       std::cout << "turn on client\n";
-    //       sleep(5);
-    //       flagCLIENT = true;
-    //       continue;
-    //     } else {
-    //       std::cout << "client wasn't opened\n";
-    //       std::cout << "Closing server...\n";
-    //       close(server_socket);
-    //       exit(10);
-    //     }
-    //   }
-    // }
 
     char buffer[2048];
     memset(buffer, 0, sizeof(buffer));
